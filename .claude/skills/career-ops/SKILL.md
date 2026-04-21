@@ -71,27 +71,35 @@ Or paste a JD directly to run the full pipeline.
 
 ## Context Loading by Mode
 
+**Career-ops project root:** `~/career-ops`
+All mode files are at `~/career-ops/modes/`. Use absolute paths — this skill is invoked globally and the working directory may not be `~/career-ops`.
+
 After determining the mode, load the necessary files before executing:
 
 ### Modes that require `_shared.md` + their mode file:
-Read `modes/_shared.md` + `modes/{mode}.md`
+Read `~/career-ops/modes/_shared.md` + `~/career-ops/modes/{mode}.md`
 
 Applies to: `auto-pipeline`, `oferta`, `ofertas`, `pdf`, `contacto`, `apply`, `pipeline`, `scan`, `scout`, `batch`
 
 ### Standalone modes (only their mode file):
-Read `modes/{mode}.md`
+Read `~/career-ops/modes/{mode}.md`
 
 Applies to: `tracker`, `deep`, `training`, `project`, `patterns`, `followup`
 
 ### Modes delegated to subagent:
-For `scan`, `apply` (with Playwright), and `pipeline` (3+ URLs): launch as Agent with the content of `_shared.md` + `modes/{mode}.md` injected into the subagent prompt.
+For `scan`, `apply` (with Playwright), and `pipeline` (3+ URLs): launch as Agent with the content of `~/career-ops/modes/_shared.md` + `~/career-ops/modes/{mode}.md` injected into the subagent prompt.
 
 ```
 Agent(
   subagent_type="general-purpose",
-  prompt="[content of modes/_shared.md]\n\n[content of modes/{mode}.md]\n\n[invocation-specific data]",
+  prompt="[content of ~/career-ops/modes/_shared.md]\n\n[content of ~/career-ops/modes/{mode}.md]\n\n[invocation-specific data]",
   description="career-ops {mode}"
 )
+```
+
+All Bash commands (scan.mjs, merge-tracker.mjs, etc.) must run from `~/career-ops`:
+```
+cd ~/career-ops && node scan.mjs
 ```
 
 Execute the instructions from the loaded mode file.
